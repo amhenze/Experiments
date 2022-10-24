@@ -1,0 +1,26 @@
+﻿@using NewTextreader
+@using WebApplication2
+@using WebApplication2._0.Models;
+@model IEnumerable<RecordModel>
+
+@{
+
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+        <meta name="viewport" content="width=device-width" />
+        <title>List</title>
+</head>
+<body>
+    <h2 align="center">Результат сортировки</h2>
+        @{
+        foreach(var line in Model)
+        {
+            <p align="center">@line.Number.ToString() @line.Letter</p>
+        }
+        }
+    }
+</body>
+</html>

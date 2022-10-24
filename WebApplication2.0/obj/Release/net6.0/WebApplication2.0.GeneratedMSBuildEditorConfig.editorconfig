@@ -1,0 +1,36 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = WebApplication2._0
+build_property.RootNamespace = WebApplication2._0
+build_property.ProjectDir = C:\Users\Amhenze\source\repos\DotNetSandBox\Rakitin\WebApplication2.0\
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\Amhenze\source\repos\DotNetSandBox\Rakitin\WebApplication2.0
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/Amhenze/source/repos/DotNetSandBox/Rakitin/WebApplication2.0/Views/ChooseFolder/ChooseFolder.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hvb3NlRm9sZGVyXENob29zZUZvbGRlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Amhenze/source/repos/DotNetSandBox/Rakitin/WebApplication2.0/Views/ChooseFolder/LinesView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hvb3NlRm9sZGVyXExpbmVzVmlldy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Amhenze/source/repos/DotNetSandBox/Rakitin/WebApplication2.0/Views/CreateFolder/CreateFolder.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3JlYXRlRm9sZGVyXENyZWF0ZUZvbGRlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Amhenze/source/repos/DotNetSandBox/Rakitin/WebApplication2.0/Views/DB/ChooseFolder.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcREJcQ2hvb3NlRm9sZGVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Amhenze/source/repos/DotNetSandBox/Rakitin/WebApplication2.0/Views/DB/dbRowsView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcREJcZGJSb3dzVmlldy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
