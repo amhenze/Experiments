@@ -1,18 +1,24 @@
 ﻿using Npgsql;
 using WebApplication2._0.Attributes;
 using WebApplication2._0.Interfaces;
+using WebApplication2._0.Options.FolderForMocks;
+using WebApplication2._0.Options.FolderForMocks.Abstractions;
 
 namespace WebApplication2._0.DataBaseWorker
 {
-    public class DBExecuter : IDBExecuter
+	public class DBExecuter : IDBExecuter
     {
-        private NpgsqlConnection _connect;
+        private IConnection _connect;
+        private ICommand _command;
         private readonly ILogger<DBExecuter> _logger;
+        private readonly ICommandFactory _commandFactory;
 
-        public DBExecuter(NpgsqlConnection connect, ILogger<DBExecuter> logger)
+        public DBExecuter(IConnection connect, ILogger<DBExecuter> logger, ICommand command,ICommandFactory commandFactory)
         {
             _connect = connect;
+            _command = command;
             _logger = logger;
+            _commandFactory = commandFactory;
             _connect.Open();
         }
 
@@ -31,11 +37,13 @@ namespace WebApplication2._0.DataBaseWorker
         public void ExecuteNonQuery(string sql, object[] parameters)
         {
             int i = 1;
-            using var cmd = new NpgsqlCommand(sql, _connect);
-            foreach (var parameter in parameters)
+            ICommand cmd = _commandFactory.Create(sql, _connect);
+			//var cmd = new Command(sql, _connect);
+			//using var cmd = new NpgsqlCommand(sql, _connect.GetConnection());
+			foreach (var parameter in parameters)
             {
-                cmd.Parameters.AddWithValue($"param{i}", parameter);
-                i++;
+				cmd.Parameters.AddWithValue($"param{i}", parameter);
+				i++;
             }
             cmd.ExecuteNonQuery();
         }
@@ -45,12 +53,12 @@ namespace WebApplication2._0.DataBaseWorker
         public async Task<List<T>> ExecuteReader<T>(string sql, object[] parameters) where T : class , new()
         {
             List<T> dataList = new List<T>();
-            await using NpgsqlCommand cmd = new NpgsqlCommand(sql, _connect);
+            ICommand cmd = _commandFactory.Create(sql, _connect); ;
             int i = 1;
             foreach (var parameter in parameters)
             {
                 cmd.Parameters.AddWithValue($"param{i}", parameter);
-                i++;// вынести
+                i++;
             }
             System.Reflection.PropertyInfo[]? properties = typeof(T).GetProperties();
             Dictionary<System.Reflection.PropertyInfo, FieldNameAttribute> attributeDictionary =
@@ -61,7 +69,7 @@ namespace WebApplication2._0.DataBaseWorker
                 attributeDictionary.Add(property, attribute);
             }
 
-            await using NpgsqlDataReader reader = await cmd.ExecuteReaderAsync();
+            await using ISQLReader reader = await cmd.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
                 var Row = new T();
