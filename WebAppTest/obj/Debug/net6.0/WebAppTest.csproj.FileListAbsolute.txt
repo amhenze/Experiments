@@ -352,3 +352,4 @@ C:\Users\Amhenze\source\repos\DotNetSandBox\Rakitin\WebAppTest\obj\Debug\net6.0\
 C:\Users\Amhenze\source\repos\DotNetSandBox\Rakitin\WebAppTest\obj\Debug\net6.0\WebAppTest.pdb
 C:\Users\Amhenze\source\repos\DotNetSandBox\Rakitin\WebAppTest\obj\Debug\net6.0\WebAppTest.genruntimeconfig.cache
 C:\Users\Amhenze\source\repos\DotNetSandBox\Rakitin\WebAppTest\obj\Debug\net6.0\ref\WebAppTest.dll
+C:\Users\Amhenze\source\repos\DotNetSandBox\Rakitin\WebAppTest\bin\Debug\net6.0\nunit.framework.dll
