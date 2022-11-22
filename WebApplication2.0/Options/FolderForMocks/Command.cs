@@ -6,7 +6,7 @@ namespace WebApplication2._0.Options.FolderForMocks
 	public class Command : ICommand
 	{
 		private readonly NpgsqlCommand npgsqlCommand;
-		public NpgsqlParameterCollection Parameters => npgsqlCommand.Parameters;
+		public ICollection<NpgsqlParameter> Parameters => npgsqlCommand.Parameters;
 		public Command(string? command, IConnection? connection)
 		{
 			npgsqlCommand = new NpgsqlCommand(command, connection.GetConnection());
