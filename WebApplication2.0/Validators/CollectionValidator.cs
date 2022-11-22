@@ -9,7 +9,7 @@ namespace WebApplication2._0.Validators
     public class CollectionValidator : AbstractValidator<CollectionModel>
     {
         private readonly ILogger<CollectionValidator> _logger;
-        public CollectionValidator(ILogger<CollectionValidator> logger, IOptions<RootFolderOptions> options)
+        public CollectionValidator(ILogger<CollectionValidator> logger,IOptions<RootFolderOptions> options)
         {
             _logger = logger;
             RuleFor(x => x.CollectionName)

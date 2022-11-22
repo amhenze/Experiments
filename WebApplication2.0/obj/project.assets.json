@@ -11192,11 +11192,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Amhenze\\source\\repos\\DotNetSandBox\\Rakitin\\WebApplication2.0\\WebApplication2.0.csproj",
+      "projectUniqueName": "C:\\Users\\Amhenze\\source\\repos\\GitClone\\WebApplication2.0\\WebApplication2.0.csproj",
       "projectName": "WebApplication2.0",
-      "projectPath": "C:\\Users\\Amhenze\\source\\repos\\DotNetSandBox\\Rakitin\\WebApplication2.0\\WebApplication2.0.csproj",
+      "projectPath": "C:\\Users\\Amhenze\\source\\repos\\GitClone\\WebApplication2.0\\WebApplication2.0.csproj",
       "packagesPath": "C:\\Users\\Amhenze\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Amhenze\\source\\repos\\DotNetSandBox\\Rakitin\\WebApplication2.0\\obj\\",
+      "outputPath": "C:\\Users\\Amhenze\\source\\repos\\GitClone\\WebApplication2.0\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

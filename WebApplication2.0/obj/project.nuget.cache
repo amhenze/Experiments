@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "AhtEgbLYrgRGt+Ex9ksmcZbr0AMcuEliAKsYmGWBY/ZUY/uLEZyJ5xxbdqLvlGUsFzbPLGRkmfjnXC9NKNUmSQ==",
+  "dgSpecHash": "Lt3DyK6hQyHi7S71C4gDkM9ynoE54UTnEmPikJLyfM4L+fgwmd9yXnPEIiOAbD5sqN6GlyWXID/GwS23QZyGhg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Amhenze\\source\\repos\\DotNetSandBox\\Rakitin\\WebApplication2.0\\WebApplication2.0.csproj",
+  "projectFilePath": "C:\\Users\\Amhenze\\source\\repos\\GitClone\\WebApplication2.0\\WebApplication2.0.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Amhenze\\.nuget\\packages\\automapper\\11.0.1\\automapper.11.0.1.nupkg.sha512",
     "C:\\Users\\Amhenze\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\11.0.0\\automapper.extensions.microsoft.dependencyinjection.11.0.0.nupkg.sha512",
