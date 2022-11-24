@@ -36,7 +36,7 @@ public class Startup
         {
             services.AddFileServices();
         }
-        services.AddValidation();
+        //services.AddValidation();
         services.AddLogging();
         services.AddMvc();
         services.AddAutoMapper(typeof(Startup));
