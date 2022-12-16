@@ -9,16 +9,12 @@ namespace WebApplication2._0.DataBaseWorker
     public class DBExecuter : IDBExecuter
     {
         private IConnection _connect;
-        private ICommand _command;
         private readonly ILogger<DBExecuter> _logger;
-        private readonly ICommandFactory _commandFactory;
 
-        public DBExecuter(IConnection connect, ILogger<DBExecuter> logger, ICommand command, ICommandFactory commandFactory)
+        public DBExecuter(IConnection connect, ILogger<DBExecuter> logger)
         {
             _connect = connect;
-            _command = command;
             _logger = logger;
-            _commandFactory = commandFactory;
             _connect.Open();
         }
 
@@ -36,8 +32,7 @@ namespace WebApplication2._0.DataBaseWorker
 
         public void ExecuteNonQuery(string sql, object[] parameters)
         {
-            int i = 1;
-            ICommand cmd = _commandFactory.Create(sql, _connect);
+            ICommand cmd = _connect.CreateCommand(sql);
             AddParameters(cmd, parameters);
             cmd.ExecuteNonQuery();
         }
@@ -46,25 +41,37 @@ namespace WebApplication2._0.DataBaseWorker
         public async Task<List<T>> ExecuteReader<T>(string sql, object[] parameters) where T : class, new()
         {
             List<T> dataList = new List<T>();
-            ICommand cmd = _commandFactory.Create(sql, _connect);
+            ICommand cmd = _connect.CreateCommand(sql);
             AddParameters(cmd, parameters);
             System.Reflection.PropertyInfo[]? properties = typeof(T).GetProperties();
-            bool noAtribute = true;
+            bool noAttribute = true;
+            Dictionary<System.Reflection.PropertyInfo, FieldNameAttribute> attributeDictionary =
+                new Dictionary<System.Reflection.PropertyInfo, FieldNameAttribute>();
+            foreach (System.Reflection.PropertyInfo property in properties)
+            {
+                var attribute = property.GetCustomAttributes(typeof(FieldNameAttribute), true).FirstOrDefault() as FieldNameAttribute;
+                if (attribute != null)
+                    noAttribute = false;
+                attributeDictionary.Add(property, attribute);
+            }
+            if (noAttribute) // возвращает list с пустой строкой
+            {
+                var Row = new T();
+                dataList.Add(Row);
+                return dataList;
+            }
             await using ISQLReader reader = await cmd.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
                 var Row = new T();
                 foreach (System.Reflection.PropertyInfo property in properties)
                 {
-                    var attribute = property.GetCustomAttributes(typeof(FieldNameAttribute), true).FirstOrDefault() as FieldNameAttribute;
+                    var attribute = attributeDictionary[property];
                     if (attribute != null)
                     {
-                        noAtribute = false;
                         var value = reader[attribute.FieldName];
                         property.SetValue(Row, value);
                     }
-                    if (noAtribute)
-                        throw new Exception("Model with no atributes");
                 }
                 dataList.Add(Row);
             }

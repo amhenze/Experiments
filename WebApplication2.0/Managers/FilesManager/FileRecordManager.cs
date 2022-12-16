@@ -14,19 +14,15 @@ namespace WebApplication2._0.Managers.FilesWorker
         private readonly RootFolderOptions _options;
         private readonly ILogger<FileRecordManager> _logger;
         private readonly IRandomize _randomize;
-        //private IValidator<FileRecordManager> _folderValidator;
         private string fileName;
 
         public FileRecordManager(IOptions<RootFolderOptions> options,
             ILogger<FileRecordManager> logger,
-            IRandomize randomize
-            //IValidator<FileRecordManager> folderValidator
-            )
+            IRandomize randomize)
         {
             _options = options.Value;
             _logger = logger;
             _randomize = randomize;
-            //_folderValidator = folderValidator;
             fileName = "newgen" + _randomize.GetRandomInt(1, 100, 999) + ".txt";
         }
 

@@ -5,28 +5,29 @@ namespace WebApplication2._0.Options.FolderForMocks
 {
 	public class Command : ICommand
 	{
-		private readonly NpgsqlCommand npgsqlCommand;
+		private readonly NpgsqlCommand _npgsqlCommand;
+		public ICollection<NpgsqlParameter> Parameters => _npgsqlCommand.Parameters;
 
-		ICollection<NpgsqlParameter> ICommand.Parameters => npgsqlCommand.Parameters;
+		ICollection<NpgsqlParameter> ICommand.Parameters => _npgsqlCommand.Parameters;
 
-		public Command(string? command, IConnection? connection)
+		public Command(NpgsqlCommand npgsqlCommand)
 		{
-			npgsqlCommand = new NpgsqlCommand(command, connection.GetConnection());
+			_npgsqlCommand = npgsqlCommand;
 		}
 
 		public int ExecuteNonQuery()
 		{
-			return npgsqlCommand.ExecuteNonQuery();
+			return _npgsqlCommand.ExecuteNonQuery();
 		}
 
 		public NpgsqlDataReader ExecuteReader()
 		{
-			return npgsqlCommand.ExecuteReader();
+			return _npgsqlCommand.ExecuteReader();
 		}
 
 		public async Task<ISQLReader> ExecuteReaderAsync()
 		{
-			return new SQLReader(await npgsqlCommand.ExecuteReaderAsync());
+			return new SQLReader(await _npgsqlCommand.ExecuteReaderAsync());
 		}
 	}
 }

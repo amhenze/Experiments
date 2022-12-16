@@ -25,9 +25,9 @@ namespace WebApplication2._0.Options.FolderForMocks
 		{
 			npgsqlConnection.Close();
 		}
-		public NpgsqlConnection GetConnection()
+		public ICommand CreateCommand(string command)
 		{
-			return npgsqlConnection;
+			return new Command(new NpgsqlCommand (command, npgsqlConnection));
 		}
 	}
 }

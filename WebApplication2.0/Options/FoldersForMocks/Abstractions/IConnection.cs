@@ -9,8 +9,8 @@ namespace WebApplication2._0.Options.FolderForMocks.Abstractions
 {
 	public interface IConnection
 	{
+		ICommand CreateCommand(string command);
 		public void Open();
 		public void Close();
-		public NpgsqlConnection GetConnection();
 	}
 }
