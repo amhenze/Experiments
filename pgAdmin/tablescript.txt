@@ -1,0 +1,14 @@
+CREATE SCHEMA if not exists myschema;
+CREATE TABLE myschema.Collections (
+	collection_id serial UNIQUE PRIMARY KEY,
+	collection_name VARCHAR(10) NOT NULL
+);
+CREATE TABLE myschema.Records (
+	record_id serial UNIQUE PRIMARY KEY,
+	collection_id int,
+	number int NOT NULL,
+	letter varchar(20) NOT NULL,
+	CONSTRAINT fk_collections
+		FOREIGN KEY (collection_id)
+			REFERENCES myschema.Collections(collection_id)
+);

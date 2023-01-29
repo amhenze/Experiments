@@ -10,21 +10,22 @@ namespace WebAppTest
     [TestClass]
     public class GenerateManagerTests
     {
-        private GenerateManager _generateManager;
-        private Mock<IRecordManager> _recordManagerMock;
-        private Mock<ICollectionManager> _collectionManagerMock;
-        private Mock<ILogger<GenerateManager>> _loggerMock;
-        private Mock<IRandomize> _randomizeMock;
+        private GenerateManager generateManagerTest;
+        private Mock<IRecordManager> recordManagerMock;
+        private Mock<ICollectionManager> collectionManagerMock;
+        private Mock<ILogger<GenerateManager>> loggerMock;
+        private Mock<IRandomize> randomizeMock;
+        private Mock<NpgsqlConnection> NpgsqlConnection;
 
         [TestInitialize]
         public void Initialize()
         {
-            _recordManagerMock = new Mock<IRecordManager>();
-            _collectionManagerMock = new Mock<ICollectionManager>();
-            _loggerMock = new Mock<ILogger<GenerateManager>>();
-            _randomizeMock = new Mock<IRandomize>();
+            recordManagerMock = new Mock<IRecordManager>();
+            collectionManagerMock = new Mock<ICollectionManager>();
+            loggerMock = new Mock<ILogger<GenerateManager>>();
+            randomizeMock = new Mock<IRandomize>();
 
-            _generateManager = new GenerateManager(_collectionManagerMock.Object, _recordManagerMock.Object, _loggerMock.Object,_randomizeMock.Object);
+            generateManagerTest = new GenerateManager(collectionManagerMock.Object, recordManagerMock.Object, loggerMock.Object,randomizeMock.Object);
         }
            
         [TestMethod]
@@ -32,18 +33,18 @@ namespace WebAppTest
         {
             //arrange 
             CollectionModel collectionModel = new CollectionModel() { CollectionId = 1};
-            _randomizeMock.Setup(x => x.GetRandomInt(1, 100, 1000)).Returns(2);
+            randomizeMock.Setup(x => x.GetRandomInt(1, 100, 1000)).Returns(2);
             var i = 100;
-            _randomizeMock.Setup(x => x.GetRandomInt(1, 0, 100000)).Returns(() => i++);
-            _randomizeMock.Setup(x => x.GetRandomString()).Returns("123");
+            randomizeMock.Setup(x => x.GetRandomInt(1, 0, 100000)).Returns(() => i++);
+            randomizeMock.Setup(x => x.GetRandomString()).Returns("123");
 
             //act
-            _generateManager.GenerateRecords(collectionModel);
+            generateManagerTest.GenerateRecords(collectionModel);
 
             //assert
-            _recordManagerMock.Verify(x => x.Create(It.IsAny<RecordModel>()), Times.Exactly(2));
-            _recordManagerMock.Verify(x => x.Create(It.Is<RecordModel>(o => o.Number == 100 && o.Letter=="123" && o.CollectionId == 1)), Times.Once);
-            _recordManagerMock.Verify(x => x.Create(It.Is<RecordModel>(o => o.Number == 101 && o.Letter == "123" && o.CollectionId == 1)), Times.Once);
+            recordManagerMock.Verify(x => x.Create(It.IsAny<RecordModel>()), Times.Exactly(2));
+            recordManagerMock.Verify(x => x.Create(It.Is<RecordModel>(o => o.Number == 100 && o.Letter=="123" && o.CollectionId == 1)), Times.Once);
+            recordManagerMock.Verify(x => x.Create(It.Is<RecordModel>(o => o.Number == 101 && o.Letter == "123" && o.CollectionId == 1)), Times.Once);
         }
     }
 }

@@ -1,0 +1,32 @@
+services:
+  db:
+    container_name: pg_container
+    image: postgres:14.5
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: test_db
+      PGDATA: "/var/lib/postgresql/data"
+    volumes:
+      - C:\Users\Amhenze\source\repos\DotNetSandBox\Rakitin\pgAdmin\pgData:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  webapp2:
+    environment:
+      WorkerType: db
+    container_name: webapp_container
+    image: webapp2
+    volumes:
+      - C:\Users\Amhenze\source\repos\TXT:/data
+    ports:
+      - "80:5266"
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
