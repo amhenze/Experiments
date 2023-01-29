@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ namespace WebAppTest.Class
 	internal class TestPropertyClassWithAttribute
 	{
 		[FieldName("record_id")]
+		[DisplayName("record_id")]
 		public int RecordId { get; set; }
 
 		[FieldName("collection_id")]

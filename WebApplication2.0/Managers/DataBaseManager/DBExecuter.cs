@@ -10,6 +10,7 @@ namespace WebApplication2._0.DataBaseWorker
     {
         private IConnection _connect;
         private readonly ILogger<DBExecuter> _logger;
+        private ISQLReader reader;
 
         public DBExecuter(IConnection connect, ILogger<DBExecuter> logger)
         {
@@ -20,6 +21,11 @@ namespace WebApplication2._0.DataBaseWorker
 
         ~DBExecuter()
         {
+            Dispose();
+        }
+
+        public void Dispose()
+        {
             try
             {
                 _connect.Close();
@@ -28,6 +34,7 @@ namespace WebApplication2._0.DataBaseWorker
             {
                 _logger.LogError("Соединение не существует");
             }
+            GC.SuppressFinalize(this);
         }
 
         public void ExecuteNonQuery(string sql, object[] parameters)
@@ -44,20 +51,19 @@ namespace WebApplication2._0.DataBaseWorker
             ICommand cmd = _connect.CreateCommand(sql);
             AddParameters(cmd, parameters);
             System.Reflection.PropertyInfo[]? properties = typeof(T).GetProperties();
-            bool noAttribute = true;
+            bool noAtribute = true;
             Dictionary<System.Reflection.PropertyInfo, FieldNameAttribute> attributeDictionary =
                 new Dictionary<System.Reflection.PropertyInfo, FieldNameAttribute>();
             foreach (System.Reflection.PropertyInfo property in properties)
             {
-                var attribute = property.GetCustomAttributes(typeof(FieldNameAttribute), true).FirstOrDefault() as FieldNameAttribute;
+                var attribute = property.GetCustomAttributes(typeof(FieldNameAttribute), true).SingleOrDefault() as FieldNameAttribute;
+                var attLength = property.GetCustomAttributes(typeof(FieldNameAttribute), true).Length;
                 if (attribute != null)
-                    noAttribute = false;
+                    noAtribute = false;
                 attributeDictionary.Add(property, attribute);
             }
-            if (noAttribute) // возвращает list с пустой строкой
+            if (noAtribute)
             {
-                var Row = new T();
-                dataList.Add(Row);
                 return dataList;
             }
             await using ISQLReader reader = await cmd.ExecuteReaderAsync();
@@ -75,7 +81,7 @@ namespace WebApplication2._0.DataBaseWorker
                 }
                 dataList.Add(Row);
             }
-            return dataList;
+			return dataList;
         }
 
         public ICommand AddParameters(ICommand cmd, object[] parameters)

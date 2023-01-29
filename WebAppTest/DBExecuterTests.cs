@@ -30,6 +30,7 @@ namespace WebAppTest
 		private List<NpgsqlParameter> _parameters;
 		private string sqlConnection = "asds";
 		private object[] param = { 1, 1, 2 };
+		private object[] value = { 2, 6, 4 };
 
 
 		[TestInitialize]
@@ -72,13 +73,14 @@ namespace WebAppTest
 			//assert
 			AssertParam(param);
 			Assert.AreEqual(3, list.Count);
-			for(int i = 0; i < list.Count; i++)
+			for(int i = 0; i < value.Length; i++)
 			{
-				Assert.AreEqual(i+1, list[i].CollectionId);
-				Assert.AreEqual(i+1, list[i].RecordId);
-				Assert.AreEqual(i+1, list[i].Number);
-				Assert.AreEqual($"{i+1}", list[i].Letter);
+				Assert.AreEqual(value[i], list[i].CollectionId);
+				Assert.AreEqual(value[i], list[i].RecordId);
+				Assert.AreEqual(value[i], list[i].Number);
+				Assert.AreEqual(Convert.ChangeType(value[i], typeof(string)), list[i].Letter);
 			}
+			_sqlReaderMock.Verify(x => x.DisposeAsync(), Times.Once);
 		}
 
 		[TestMethod]
@@ -89,11 +91,7 @@ namespace WebAppTest
 			List<TestPropertyClassNoAttribute> list = await _dbExecuter.ExecuteReader<TestPropertyClassNoAttribute>(sqlConnection, param);
 			//assert
 			AssertParam(param);
-			Assert.AreEqual(1, list.Count);
-			Assert.AreEqual(0, list[0].CollectionId);
-			Assert.AreEqual(0, list[0].RecordId);
-			Assert.AreEqual(0, list[0].Number);
-			Assert.AreEqual(null, list[0].Letter);
+			Assert.AreEqual(0, list.Count);
 		}
 
 		[TestMethod]
@@ -107,13 +105,22 @@ namespace WebAppTest
 			//assert
 			AssertParam(param);
 			Assert.AreEqual(3, list.Count);
-			for (int i = 0; i < list.Count; i++)
+			for (int i = 0; i < value.Length; i++)
 			{
-				Assert.AreEqual(i + 1, list[i].CollectionId);
-				Assert.AreEqual(i + 1, list[i].RecordId);
+				Assert.AreEqual(value[i], list[i].CollectionId);
+				Assert.AreEqual(value[i], list[i].RecordId);
 			}
+			_sqlReaderMock.Verify(x => x.DisposeAsync(), Times.Once);
+		}
+
+		[TestMethod]
+		public void DBExecuter_Dispose()
+		{
+			//act
+			_dbExecuter.Dispose();
+			//assert
 			_connectionMock.Verify(x => x.Open(), Times.Once());
-			//_connectionMock.Verify(x => x.Close(), Times.Once());
+			_connectionMock.Verify(x => x.Close(), Times.Once());
 		}
 
 		public void SqlReaderSetupCallback()
@@ -126,18 +133,23 @@ namespace WebAppTest
 
 		public void SqlReaderSetupIndexCallback()
 		{
-			string[] attribute = { "record_id", "collection_id", "number" };
-			int letterCount = 0;
+			string[] attribute = { "record_id", "collection_id", "number", "letter" };
+			object[] T = { 1, 1, 1, "a" };
 			for (int i = 0; i < attribute.Length; i++)
 			{
 				int count = 0;
+				string attributeType = attribute[i];
 				_sqlReaderMock.SetupGet(x => x[attribute[i]])
 					.Callback(() => ++count)
-					.Returns(() => count);
+					.Returns(() =>
+					{
+						if (attributeType == "letter")
+						{
+							return Convert.ChangeType(value[count-1], typeof(string));
+						}
+						return value[count-1];
+					});
 			}
-			_sqlReaderMock.SetupGet(x => x["letter"])
-				.Callback(() => ++letterCount)
-				.Returns(() => $"{letterCount}");
 		}
 
 		public void AssertParam(object[] param)
